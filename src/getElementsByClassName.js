@@ -5,20 +5,29 @@
 
 // But instead we're going to implement it from scratch:
 var getElementsByClassName = function(className) {
-  var els = [];
-  var el = document;
+  // create an empty array to store elements
+  var elements = [];
 
-  var findByClassName = function(els, el, className) {
-	  for (var i = 0; i < el.childNodes.length; i++) {
-	    if (el.childNodes[i].classList && el.childNodes[i].classList.contains(className)) {
-	      els.push(el.childNodes[i]);
-	    }
-	    if (el.childNodes[i].childNodes[0]) {
-	      findByClassName(els, el.childNodes[i], className);	
-	    }
-	  }
+  // given a node
+  var find = function(node) {
+    // if node has target class name
+    if (node.classList && node.classList.contains(className)) {
+      // push node to elements array
+      elements.push(node);
+    }
+    // if node has children
+    if (node.children.length > 0) {
+      // for node's each child
+      for (var child of node.children) {
+        // call above function by passing in child
+        find(child);
+      }
+    }
   };
 
-  findByClassName(els, el, className);
-  return els;
+  // initiate recursion by passing in document to above function
+  find(document);
+
+  // return elements array
+  return elements;
 };
